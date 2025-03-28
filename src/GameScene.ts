@@ -49,6 +49,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.bunny = this.physics.add.sprite(100, 200, "bunny");
+    this.bunny.setOffset(0, -5);
 
     this.physics.add.collider(this.bunny, mainLayer!);
 
