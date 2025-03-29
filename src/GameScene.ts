@@ -33,6 +33,11 @@ export class GameScene extends Phaser.Scene {
       frameHeight: 32,
     });
 
+    this.load.spritesheet("bunny_idle", "assets/bunny_idle.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
     this.load.spritesheet("fox", "assets/fox_spritesheet.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -61,8 +66,15 @@ export class GameScene extends Phaser.Scene {
 
     this.anims.create({
       key: "bunny_running",
-      frameRate: 10,
+      frameRate: 15,
       frames: "bunny",
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "bunny_idle",
+      frameRate: 2,
+      frames: "bunny_idle",
       repeat: -1,
     });
 
@@ -105,22 +117,27 @@ export class GameScene extends Phaser.Scene {
         this.bunny.flipX = true;
       }
       if (this.bunny?.body?.touching.down)
-        this.bunny?.anims.play("bunny_running", true);
+        this.bunny?.anims.play("bunny_idle", false);
+
+      this.bunny?.anims.play("bunny_running", true);
     } else if (this.cursors?.right.isDown) {
       this.bunny?.setVelocityX(200);
       if (this.bunny) {
         this.bunny.flipX = false;
       }
       if (this.bunny?.body?.touching.down)
-        this.bunny?.anims.play("bunny_running", true);
+        this.bunny?.anims.play("bunny_idle", false);
+
+      this.bunny?.anims.play("bunny_running", true);
     } else {
       this.bunny?.setVelocityX(0);
-      this.bunny?.anims.play("bunny_running", false);
+      this.bunny?.anims.play("bunny_idle", true);
     }
 
     if (this.cursors?.space.isDown && this.bunny?.body?.blocked.down) {
       this.bunny?.setVelocityY(-400);
       this.bunny.setAccelerationY(400);
+      this.bunny?.anims.play("bunny_idle", false);
     }
   }
 
@@ -139,6 +156,7 @@ export class GameScene extends Phaser.Scene {
         directionY < 20
       ) {
         this.endGame = true;
+        this.scene.start("game-over");
         this.fox.setVelocityX(0);
       } else if (directionX < 0) {
         this.fox.setVelocityX(-speed);
