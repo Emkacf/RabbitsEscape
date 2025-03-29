@@ -6,8 +6,8 @@ const gameBoard = document.createElement("canvas");
 document.body.appendChild(gameBoard);
 
 const GAME_SIZE = {
-  width: 800,
-  height: 640,
+  width: 620,
+  height: 400,
 };
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -16,6 +16,9 @@ const config: Phaser.Types.Core.GameConfig = {
   height: GAME_SIZE.height,
   canvas: gameBoard,
   scene: GameScene,
+  scale: {
+    zoom: 2,
+  },
   backgroundColor: "#ededed",
   pixelArt: true,
   antialias: false,

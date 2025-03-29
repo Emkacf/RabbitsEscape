@@ -15,6 +15,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("background", "assets/forest_bckg.png");
+    this.load.image("carrot", "assets/carrot.png");
     this.load.spritesheet("tiles", "assets/tilemap.png", {
       frameWidth: 18,
       frameHeight: 18,
@@ -40,6 +42,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(310, 230, "background").setScrollFactor(0).scale = 0.61;
+    this.add.image(200, 450, "carrot");
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("tileset-tiles", "tiles", 18, 18);
 
@@ -50,7 +54,6 @@ export class GameScene extends Phaser.Scene {
     if (objectsLayer) this.objectsLayer = objectsLayer;
 
     objectsLayer?.setTileIndexCallback(68, this.collectObject, this);
-
     mainLayer?.setCollisionByExclusion([-1]);
 
     this.physics.world.bounds.width = mainLayer!.width;
@@ -72,7 +75,7 @@ export class GameScene extends Phaser.Scene {
 
     this.bunny = this.physics.add.sprite(100, 300, "bunny");
     this.bunny.setOffset(0, -5);
-    this.bunny.setBounce(0.2);
+    this.bunny.setBounce(0.1);
     this.bunny.setCollideWorldBounds(true);
 
     this.fox = this.physics.add.sprite(0, 300, "fox");
@@ -135,7 +138,6 @@ export class GameScene extends Phaser.Scene {
         directionY > -20 &&
         directionY < 20
       ) {
-        console.log("endGame");
         this.endGame = true;
         this.fox.setVelocityX(0);
       } else if (directionX < 0) {
@@ -189,8 +191,7 @@ export class GameScene extends Phaser.Scene {
     sprite: Phaser.GameObjects.GameObject,
     tile: Phaser.Tilemaps.Tile
   ) => {
-    console.log("Tile index:", tile.index);
-    this.objectsLayer?.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    this.objectsLayer?.removeTileAt(tile.x, tile.y);
     return false;
   };
 }
