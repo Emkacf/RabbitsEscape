@@ -1,4 +1,5 @@
 import { GameScene } from "./GameScene";
+import { MenuScene } from "./MenuScene";
 import "./style.scss";
 import Phaser from "phaser";
 
@@ -15,7 +16,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: GAME_SIZE.width,
   height: GAME_SIZE.height,
   canvas: gameBoard,
-  scene: GameScene,
+  scene: [MenuScene, GameScene],
   scale: {
     zoom: 2,
   },
