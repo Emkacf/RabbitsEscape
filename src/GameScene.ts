@@ -7,6 +7,7 @@ export class GameScene extends Phaser.Scene {
   platforms: Phaser.Physics.Arcade.StaticGroup | undefined;
   line?: Phaser.GameObjects.Line;
   mainLayer?: Phaser.Tilemaps.TilemapLayer;
+  objectsLayer?: Phaser.Tilemaps.TilemapLayer;
   endGame: boolean = false;
 
   constructor() {
@@ -46,6 +47,9 @@ export class GameScene extends Phaser.Scene {
     const mainLayer = map.createLayer("main", tileset!, 0, 0);
     if (mainLayer) this.mainLayer = mainLayer;
     const objectsLayer = map.createLayer("objects", tileset!, 0, 0);
+    if (objectsLayer) this.objectsLayer = objectsLayer;
+
+    objectsLayer?.setTileIndexCallback(68, this.collectObject, this);
 
     mainLayer?.setCollisionByExclusion([-1]);
 
@@ -68,16 +72,17 @@ export class GameScene extends Phaser.Scene {
 
     this.bunny = this.physics.add.sprite(100, 300, "bunny");
     this.bunny.setOffset(0, -5);
-    this.bunny.setBounce(0.1);
+    this.bunny.setBounce(0.2);
     this.bunny.setCollideWorldBounds(true);
 
     this.fox = this.physics.add.sprite(0, 300, "fox");
     this.fox.setOffset(0, -10);
-    this.fox.setBounce(0.1);
+    this.fox.setBounce(0.2);
     this.fox.setCollideWorldBounds(true);
 
     this.physics.add.collider(this.bunny, mainLayer!);
     this.physics.add.collider(this.fox, mainLayer!);
+    this.physics.add.overlap(this.bunny, objectsLayer!);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -179,4 +184,13 @@ export class GameScene extends Phaser.Scene {
 
     return tile !== null || groundTile === null;
   }
+
+  collectObject = (
+    sprite: Phaser.GameObjects.GameObject,
+    tile: Phaser.Tilemaps.Tile
+  ) => {
+    console.log("Tile index:", tile.index);
+    this.objectsLayer?.removeTileAt(tile.x, tile.y); // remove the tile/coin
+    return false;
+  };
 }
