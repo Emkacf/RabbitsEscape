@@ -11,13 +11,13 @@ export class MenuScene extends Phaser.Scene {
     const { width, height } = this.scale;
 
     // Play button
-    const playButton = this.add
+    const startButton = this.add
       .rectangle(width * 0.5, height * 0.5, 150, 50, 0x454545)
       .setInteractive();
 
-    this.add.text(playButton.x, playButton.y, "Play").setOrigin(0.5);
+    this.add.text(startButton.x, startButton.y, "Start").setOrigin(0.5);
 
-    playButton.on("pointerdown", () => {
+    startButton.on("pointerdown", () => {
       this.scene.start("Game scene");
     });
   }
