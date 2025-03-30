@@ -9,8 +9,8 @@ const gameBoard = document.createElement("canvas");
 document.body.appendChild(gameBoard);
 
 const GAME_SIZE = {
-  width: 620,
-  height: 400,
+  width: 630,
+  height: 432,
 };
 
 const config: Phaser.Types.Core.GameConfig = {

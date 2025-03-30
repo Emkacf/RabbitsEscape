@@ -21,7 +21,7 @@ export class GameScene extends Phaser.Scene {
       frameWidth: 18,
       frameHeight: 18,
     });
-    this.load.tilemapTiledJSON("map", "assets/lvl1.json");
+    this.load.tilemapTiledJSON("map", "assets/game_level.json");
 
     this.load.spritesheet("platforms", "assets/platforms.png", {
       frameWidth: 16,
@@ -53,16 +53,21 @@ export class GameScene extends Phaser.Scene {
     const tileset = map.addTilesetImage("tileset-tiles", "tiles", 18, 18);
 
     const bckgLayer = map.createLayer("background", tileset!, 0, 0);
-    const mainLayer = map.createLayer("main", tileset!, 0, 0);
+    bckgLayer?.setScale(2);
+
+    const mainLayer = map.createLayer("ground", tileset!, 0, 0);
+    mainLayer?.setScale(2);
     if (mainLayer) this.mainLayer = mainLayer;
+
     const objectsLayer = map.createLayer("objects", tileset!, 0, 0);
+    objectsLayer?.setScale(2);
     if (objectsLayer) this.objectsLayer = objectsLayer;
 
     objectsLayer?.setTileIndexCallback(68, this.collectObject, this);
     mainLayer?.setCollisionByExclusion([-1]);
 
-    this.physics.world.bounds.width = mainLayer!.width;
-    this.physics.world.bounds.height = mainLayer!.height;
+    this.physics.world.bounds.width = mainLayer!.width * 2;
+    this.physics.world.bounds.height = mainLayer!.height * 2;
 
     this.anims.create({
       key: "bunny_running",
@@ -85,12 +90,12 @@ export class GameScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.bunny = this.physics.add.sprite(100, 300, "bunny");
+    this.bunny = this.physics.add.sprite(200, 400, "bunny");
     this.bunny.setOffset(0, -5);
     this.bunny.setBounce(0.1);
     this.bunny.setCollideWorldBounds(true);
 
-    this.fox = this.physics.add.sprite(0, 300, "fox");
+    this.fox = this.physics.add.sprite(-200, 400, "fox");
     this.fox.setOffset(0, -10);
     this.fox.setBounce(0.2);
     this.fox.setCollideWorldBounds(true);
@@ -100,7 +105,12 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.bunny, objectsLayer!);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.setBounds(
+      0,
+      0,
+      map.widthInPixels * 2,
+      map.heightInPixels * 2
+    );
     this.cameras.main.startFollow(this.bunny);
 
     this.cameras.main.setBackgroundColor("#ccccff");
@@ -190,12 +200,12 @@ export class GameScene extends Phaser.Scene {
 
     const rayEnd = {
       x: rayStart.x + direction * 30,
-      y: rayStart.y - 10,
+      y: rayStart.y - 20,
     };
 
     const tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y);
 
-    const groundCheckX = this.fox.x + direction * 60;
+    const groundCheckX = this.fox.x + direction * 30;
     const groundCheckY = this.fox.y + 32;
     const groundTile = this.mainLayer.getTileAtWorldXY(
       groundCheckX,
