@@ -10,7 +10,6 @@ export class CreditsScene extends Phaser.Scene {
   create() {
     const { width, height } = this.scale;
 
-    // Title
     const titleText = this.add.text(width * 0.5, height * 0.15, "Credits", {
       fontSize: "32px",
       color: "#005555",

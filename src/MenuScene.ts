@@ -13,8 +13,20 @@ export class MenuScene extends Phaser.Scene {
     const text =
       "In sprawling fields, a mother rabbit races against time.\n\nWith her young waiting hungrily, she gathers nourishing carrots while evading a relentless fox, driven by the pure instinct to protect her family.For if the fox catches her, it will devour her—and her young ones will perish.";
 
-    const styledText = this.add.text(width * 0.5, height * 0.35, text, {
-      fontSize: "22px",
+    const titleText = this.add.text(
+      width * 0.5,
+      height * 0.1,
+      "Rabbit's Escape",
+      {
+        fontSize: "32px Arial",
+        color: "#005588",
+        align: "center",
+      }
+    );
+    titleText.setOrigin(0.5);
+
+    const styledText = this.add.text(width * 0.5, height * 0.4, text, {
+      fontSize: "18px",
       color: "#005555",
       align: "center",
       wordWrap: { width: width - 100 },
@@ -22,11 +34,11 @@ export class MenuScene extends Phaser.Scene {
     styledText.setOrigin(0.5);
 
     const startButton = this.add
-      .rectangle(width * 0.5, height * 0.75, 150, 50, 0x454545)
+      .rectangle(width * 0.5, height * 0.7, 150, 50, 0x454545)
       .setInteractive();
 
     const creditsButton = this.add
-      .rectangle(width * 0.5, height * 0.9, 150, 50, 0x454545)
+      .rectangle(width * 0.5, height * 0.85, 150, 50, 0x454545)
       .setInteractive();
 
     this.add

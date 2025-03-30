@@ -8,7 +8,6 @@ export class GameScene extends Phaser.Scene {
   line?: Phaser.GameObjects.Line;
   mainLayer?: Phaser.Tilemaps.TilemapLayer;
   objectsLayer?: Phaser.Tilemaps.TilemapLayer;
-  endGame: boolean = false;
   bunnySpeed = 200;
 
   constructor() {
@@ -153,7 +152,7 @@ export class GameScene extends Phaser.Scene {
       this.bunny?.anims.play("bunny_idle", false);
     }
 
-    if (!this.endGame && this.bunny?.body?.blocked.down) {
+    if (this.bunny?.body?.blocked.down) {
       this.enemyFollows();
     }
   }
@@ -172,7 +171,6 @@ export class GameScene extends Phaser.Scene {
         directionY > -30 &&
         directionY < 30
       ) {
-        this.endGame = true;
         this.gameOver();
         this.fox.setVelocityX(0);
       } else if (directionX < 0) {
