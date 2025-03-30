@@ -31,7 +31,7 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     gameOverButton.on("pointerdown", () => {
-      gameOverButton.fillColor = 0x4445588;
+      gameOverButton.fillColor = 0x445588;
       const goToGame = () => {
         this.scene.start("main-menu");
       };
@@ -39,6 +39,4 @@ export class GameOverScene extends Phaser.Scene {
       this.time.delayedCall(100, goToGame);
     });
   }
-
-  update() {}
 }

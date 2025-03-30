@@ -247,10 +247,9 @@ export class GameScene extends Phaser.Scene {
   };
 
   gameOver = () => {
-    const goToGameOver = () => {
+    this.time.delayedCall(100, () => {
       this.scene.start("game-over");
       this.scene.remove();
-    };
-    this.time.delayedCall(100, goToGameOver);
+    });
   };
 }

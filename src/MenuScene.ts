@@ -22,7 +22,11 @@ export class MenuScene extends Phaser.Scene {
     styledText.setOrigin(0.5);
 
     const startButton = this.add
-      .rectangle(width * 0.5, height * 0.8, 150, 50, 0x454545)
+      .rectangle(width * 0.5, height * 0.75, 150, 50, 0x454545)
+      .setInteractive();
+
+    const creditsButton = this.add
+      .rectangle(width * 0.5, height * 0.9, 150, 50, 0x454545)
       .setInteractive();
 
     this.add
@@ -32,14 +36,28 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    this.add
+      .text(creditsButton.x, creditsButton.y, "Credits", {
+        fontSize: "20px",
+        color: "#ffffff",
+      })
+      .setOrigin(0.5);
+
     startButton.on("pointerdown", () => {
       startButton.fillColor = 0x4445588;
-      const goToGame = () => {
+
+      this.time.delayedCall(100, () => {
         this.scene.add("game-scene", GameScene);
         this.scene.start("game-scene");
-      };
+      });
+    });
 
-      this.time.delayedCall(100, goToGame);
+    creditsButton.on("pointerdown", () => {
+      creditsButton.fillColor = 0x445588;
+
+      this.time.delayedCall(100, () => {
+        this.scene.start("credits");
+      });
     });
   }
 

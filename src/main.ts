@@ -1,6 +1,6 @@
+import { CreditsScene } from "./CreditsScene";
 import { FinishedScene } from "./FinishedScene";
 import { GameOverScene } from "./GameOverScene";
-import { GameScene } from "./GameScene";
 import { MenuScene } from "./MenuScene";
 import "./style.scss";
 import Phaser from "phaser";
@@ -18,7 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: GAME_SIZE.width,
   height: GAME_SIZE.height,
   canvas: gameBoard,
-  scene: [MenuScene, GameOverScene, FinishedScene],
+  scene: [MenuScene, GameOverScene, FinishedScene, CreditsScene],
   scale: {
     zoom: 2,
   },
