@@ -16,8 +16,13 @@ export class GameScene extends Phaser.Scene {
 
   preload() {
     this.load.image("background", "assets/forest_bckg.png");
-    this.load.image("carrot", "assets/carrot.png");
+    this.load.image("carrot_tile", "assets/carrot.png");
     this.load.spritesheet("tiles", "assets/tilemap.png", {
+      frameWidth: 18,
+      frameHeight: 18,
+    });
+
+    this.load.spritesheet("carrot", "assets/carrot.png", {
       frameWidth: 18,
       frameHeight: 18,
     });
@@ -48,9 +53,9 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.add.image(310, 230, "background").setScrollFactor(0).scale = 0.61;
-    this.add.image(200, 450, "carrot");
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("tileset-tiles", "tiles", 18, 18);
+    const carrot = map.addTilesetImage("carrot", "carrot_tile", 18, 18);
 
     const bckgLayer = map.createLayer("background", tileset!, 0, 0);
     bckgLayer?.setScale(2);
@@ -59,11 +64,13 @@ export class GameScene extends Phaser.Scene {
     mainLayer?.setScale(2);
     if (mainLayer) this.mainLayer = mainLayer;
 
-    const objectsLayer = map.createLayer("objects", tileset!, 0, 0);
+    const objectsLayer = map.createLayer("objects", [tileset!, carrot!], 0, 0);
     objectsLayer?.setScale(2);
     if (objectsLayer) this.objectsLayer = objectsLayer;
 
-    objectsLayer?.setTileIndexCallback(68, this.collectObject, this);
+    objectsLayer?.setTileIndexCallback(181, this.collectObject, this);
+    objectsLayer?.setTileIndexCallback(112, this.gameFinished, this);
+
     mainLayer?.setCollisionByExclusion([-1]);
 
     this.physics.world.bounds.width = mainLayer!.width * 2;
@@ -90,12 +97,12 @@ export class GameScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.bunny = this.physics.add.sprite(200, 400, "bunny");
+    this.bunny = this.physics.add.sprite(300, 800, "bunny");
     this.bunny.setOffset(0, -5);
     this.bunny.setBounce(0.1);
     this.bunny.setCollideWorldBounds(true);
 
-    this.fox = this.physics.add.sprite(-200, 400, "fox");
+    this.fox = this.physics.add.sprite(-200, 800, "fox");
     this.fox.setOffset(0, -10);
     this.fox.setBounce(0.2);
     this.fox.setCollideWorldBounds(true);
@@ -117,10 +124,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   update() {
-    if (!this.endGame) {
-      this.enemyFollows();
-    }
-
     if (this.cursors?.left.isDown) {
       this.bunny?.setVelocityX(-200);
       if (this.bunny) {
@@ -145,9 +148,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (this.cursors?.space.isDown && this.bunny?.body?.blocked.down) {
-      this.bunny?.setVelocityY(-400);
+      this.bunny?.setVelocityY(-420);
       this.bunny.setAccelerationY(400);
       this.bunny?.anims.play("bunny_idle", false);
+    }
+
+    if (!this.endGame && this.bunny?.body?.blocked.down) {
+      this.enemyFollows();
     }
   }
 
@@ -156,14 +163,14 @@ export class GameScene extends Phaser.Scene {
       const directionX = this.bunny.x - this.fox.x;
       const directionY = this.bunny.y - this.fox.y;
 
-      const speed = 60;
-      const jumpSpeed = -250;
+      const speed = 200;
+      const jumpSpeed = -280;
 
       if (
-        directionX > -20 &&
-        directionX < 20 &&
-        directionY > -20 &&
-        directionY < 20
+        directionX > -30 &&
+        directionX < 30 &&
+        directionY > -30 &&
+        directionY < 30
       ) {
         this.endGame = true;
         this.scene.start("game-over");
@@ -221,5 +228,12 @@ export class GameScene extends Phaser.Scene {
   ) => {
     this.objectsLayer?.removeTileAt(tile.x, tile.y);
     return false;
+  };
+
+  gameFinished = (
+    sprite: Phaser.GameObjects.GameObject,
+    tile: Phaser.Tilemaps.Tile
+  ) => {
+    this.scene.start("game-finished");
   };
 }

@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 export class FinishedScene extends Phaser.Scene {
   constructor() {
-    super("Finished");
+    super("game-finished");
   }
 
   preload() {}
