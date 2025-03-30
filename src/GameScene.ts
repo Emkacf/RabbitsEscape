@@ -9,6 +9,7 @@ export class GameScene extends Phaser.Scene {
   mainLayer?: Phaser.Tilemaps.TilemapLayer;
   objectsLayer?: Phaser.Tilemaps.TilemapLayer;
   endGame: boolean = false;
+  bunnySpeed = 200;
 
   constructor() {
     super("Game scene");
@@ -119,13 +120,11 @@ export class GameScene extends Phaser.Scene {
       map.heightInPixels * 2
     );
     this.cameras.main.startFollow(this.bunny);
-
-    this.cameras.main.setBackgroundColor("#ccccff");
   }
 
   update() {
     if (this.cursors?.left.isDown) {
-      this.bunny?.setVelocityX(-200);
+      this.bunny?.setVelocityX(-this.bunnySpeed);
       if (this.bunny) {
         this.bunny.flipX = true;
       }
@@ -134,7 +133,7 @@ export class GameScene extends Phaser.Scene {
 
       this.bunny?.anims.play("bunny_running", true);
     } else if (this.cursors?.right.isDown) {
-      this.bunny?.setVelocityX(200);
+      this.bunny?.setVelocityX(this.bunnySpeed);
       if (this.bunny) {
         this.bunny.flipX = false;
       }
@@ -164,7 +163,7 @@ export class GameScene extends Phaser.Scene {
       const directionY = this.bunny.y - this.fox.y;
 
       const speed = 200;
-      const jumpSpeed = -280;
+      const jumpSpeed = -350;
 
       if (
         directionX > -30 &&
@@ -227,6 +226,18 @@ export class GameScene extends Phaser.Scene {
     tile: Phaser.Tilemaps.Tile
   ) => {
     this.objectsLayer?.removeTileAt(tile.x, tile.y);
+
+    const originalSpeed = this.bunnySpeed;
+    this.bunnySpeed += 50;
+
+    this.time.addEvent({
+      delay: 2000,
+      callback: () => {
+        this.bunnySpeed = originalSpeed;
+      },
+      callbackScope: this,
+    });
+
     return false;
   };
 
