@@ -12,7 +12,7 @@ export class GameScene extends Phaser.Scene {
   bunnySpeed = 200;
 
   constructor() {
-    super("Game scene");
+    super("game-scene");
   }
 
   preload() {
@@ -249,6 +249,7 @@ export class GameScene extends Phaser.Scene {
   gameOver = () => {
     const goToGameOver = () => {
       this.scene.start("game-over");
+      this.scene.remove();
     };
     this.time.delayedCall(100, goToGameOver);
   };

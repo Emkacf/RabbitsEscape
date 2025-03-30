@@ -18,7 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
   width: GAME_SIZE.width,
   height: GAME_SIZE.height,
   canvas: gameBoard,
-  scene: [MenuScene, GameScene, GameOverScene, FinishedScene],
+  scene: [MenuScene, GameOverScene, FinishedScene],
   scale: {
     zoom: 2,
   },

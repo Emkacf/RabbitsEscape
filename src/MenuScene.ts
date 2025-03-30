@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GameScene } from "./GameScene";
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -34,7 +35,8 @@ export class MenuScene extends Phaser.Scene {
     startButton.on("pointerdown", () => {
       startButton.fillColor = 0x4445588;
       const goToGame = () => {
-        this.scene.start("Game scene");
+        this.scene.add("game-scene", GameScene);
+        this.scene.start("game-scene");
       };
 
       this.time.delayedCall(100, goToGame);
