@@ -105,7 +105,7 @@ export class GameScene extends Phaser.Scene {
 
     this.fox = this.physics.add.sprite(-200, 800, "fox");
     this.fox.setOffset(0, -10);
-    this.fox.setBounce(0.2);
+    this.fox.setBounce(0.1);
     this.fox.setCollideWorldBounds(true);
 
     this.physics.add.collider(this.bunny, mainLayer!);
@@ -153,7 +153,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (this.bunny?.body?.blocked.down) {
-      this.enemyFollows();
+      this.time.delayedCall(200, () => {
+        this.enemyFollows();
+      });
     }
   }
 
@@ -162,7 +164,7 @@ export class GameScene extends Phaser.Scene {
       const directionX = this.bunny.x - this.fox.x;
       const directionY = this.bunny.y - this.fox.y;
 
-      const speed = 200;
+      const speed = 250;
       const jumpSpeed = -350;
 
       if (
@@ -204,11 +206,16 @@ export class GameScene extends Phaser.Scene {
     };
 
     const rayEnd = {
-      x: rayStart.x + direction * 30,
+      x: rayStart.x + direction * 35,
       y: rayStart.y - 20,
     };
 
-    const tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y);
+    const debugGraphics = this.add.graphics();
+
+    let tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y);
+    if (!tile) {
+      tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y + 10);
+    }
 
     const groundCheckX = this.fox.x + direction * 30;
     const groundCheckY = this.fox.y + 32;
@@ -241,13 +248,14 @@ export class GameScene extends Phaser.Scene {
   };
 
   gameFinished = () => {
+    this.scene.remove();
     this.scene.start("game-finished");
   };
 
   gameOver = () => {
     this.time.delayedCall(100, () => {
-      this.scene.start("game-over");
       this.scene.remove();
+      this.scene.start("game-over");
     });
   };
 }
