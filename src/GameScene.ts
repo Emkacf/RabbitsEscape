@@ -70,6 +70,7 @@ export class GameScene extends Phaser.Scene {
     if (objectsLayer) this.objectsLayer = objectsLayer;
 
     objectsLayer?.setTileIndexCallback(181, this.collectObject, this);
+    objectsLayer?.setTileIndexCallback(69, this.gameOver, this);
     objectsLayer?.setTileIndexCallback(112, this.gameFinished, this);
 
     mainLayer?.setCollisionByExclusion([-1]);
@@ -79,7 +80,7 @@ export class GameScene extends Phaser.Scene {
 
     this.anims.create({
       key: "bunny_running",
-      frameRate: 15,
+      frameRate: 20,
       frames: "bunny",
       repeat: -1,
     });
@@ -172,7 +173,7 @@ export class GameScene extends Phaser.Scene {
         directionY < 30
       ) {
         this.endGame = true;
-        this.scene.start("game-over");
+        this.gameOver();
         this.fox.setVelocityX(0);
       } else if (directionX < 0) {
         this.fox.setVelocityX(-speed);
@@ -241,10 +242,14 @@ export class GameScene extends Phaser.Scene {
     return false;
   };
 
-  gameFinished = (
-    sprite: Phaser.GameObjects.GameObject,
-    tile: Phaser.Tilemaps.Tile
-  ) => {
+  gameFinished = () => {
     this.scene.start("game-finished");
+  };
+
+  gameOver = () => {
+    const goToGameOver = () => {
+      this.scene.start("game-over");
+    };
+    this.time.delayedCall(100, goToGameOver);
   };
 }
