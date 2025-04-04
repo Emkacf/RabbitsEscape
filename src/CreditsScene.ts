@@ -36,7 +36,7 @@ export class CreditsScene extends Phaser.Scene {
       .rectangle(width * 0.5, height * 0.8, 200, 50, 0x454545)
       .setInteractive();
 
-    const backButtonText = this.add
+    this.add
       .text(backButton.x, backButton.y, "Back to Menu", {
         fontSize: "20px",
         color: "#ffffff",

@@ -210,8 +210,6 @@ export class GameScene extends Phaser.Scene {
       y: rayStart.y - 20,
     };
 
-    const debugGraphics = this.add.graphics();
-
     let tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y);
     if (!tile) {
       tile = this.mainLayer.getTileAtWorldXY(rayEnd.x, rayEnd.y + 10);
@@ -228,7 +226,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   collectObject = (
-    sprite: Phaser.GameObjects.GameObject,
+    _: Phaser.GameObjects.GameObject,
     tile: Phaser.Tilemaps.Tile
   ) => {
     this.objectsLayer?.removeTileAt(tile.x, tile.y);
